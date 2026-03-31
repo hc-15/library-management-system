@@ -21,3 +21,19 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# 🔐 Backend sensitive file
+backend/src/main/resources/application.properties
+
+# Backend build
+backend/target/
+
+# Frontend
+frontend/node_modules/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
