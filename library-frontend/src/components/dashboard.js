@@ -12,37 +12,31 @@ function Dashboard() {
   const userEmail = localStorage.getItem("userEmail");
    // 👉 DEBUG: Check if email is retrieved
   // ✅ LOAD DATA PROPERLY
-const fetchData = useCallback(async () => {
-  try {
-    const bor = await axios.get(
-      await axios.get(
-        `${API_BASE}/api/books/my-books?email=${userEmail}`
-)
-    );
-
-    const res = await axios.get(
-      await axios.get(
-        `${API_BASE}/api/books/reserved?email=${userEmail}`
-)
-    );
-
-    setBorrowed(bor.data);
-    setReserved(res.data);
-  } catch (err) {
-    console.error("API ERROR:", err);
-  }
-}, [userEmail]);
-
   useEffect(() => {
-    if (!userEmail) {
-      navigate("/");
-      return;
+  const fetchData = async () => {
+    try {
+      const bor = await axios.get(
+        `${API_BASE}/api/books/my-books?email=${userEmail}`
+      );
+
+      const res = await axios.get(
+        `${API_BASE}/api/books/reserved?email=${userEmail}`
+      );
+
+      setBorrowed(bor.data);
+      setReserved(res.data);
+    } catch (err) {
+      console.error("API ERROR:", err);
     }
+  };
 
-    fetchData();
-  }, [fetchData, navigate, userEmail]);
+  if (!userEmail) {
+    navigate("/");
+    return;
+  }
 
-
+  fetchData();
+}, [navigate, userEmail]);
   const logout = () => {
     localStorage.removeItem("userEmail");
     navigate("/");
