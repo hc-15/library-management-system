@@ -12,15 +12,6 @@ function Dashboard() {
   const userEmail = localStorage.getItem("userEmail");
    // 👉 DEBUG: Check if email is retrieved
   // ✅ LOAD DATA PROPERLY
-  useEffect(() => {
-    if (!userEmail) {
-      navigate("/");
-      return;
-    }
-
-    fetchData();
-  }, [fetchData, navigate, userEmail]);
-
 const fetchData = useCallback(async () => {
   try {
     const bor = await axios.get(
@@ -41,6 +32,16 @@ const fetchData = useCallback(async () => {
     console.error("API ERROR:", err);
   }
 }, [userEmail]);
+
+  useEffect(() => {
+    if (!userEmail) {
+      navigate("/");
+      return;
+    }
+
+    fetchData();
+  }, [fetchData, navigate, userEmail]);
+
 
   const logout = () => {
     localStorage.removeItem("userEmail");
