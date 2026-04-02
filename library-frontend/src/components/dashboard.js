@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE = "https://library-management-system-tu7q.onrender.com";
 function Dashboard() {
   const navigate = useNavigate();
 
@@ -18,24 +19,28 @@ function Dashboard() {
     }
 
     fetchData();
-  }, []);
+  }, [fetchData, navigate, userEmail]);
 
-  const fetchData = async () => {
-    try {
-      const bor = await axios.get(
-        `http://localhost:8080/api/books/my-books?email=${userEmail}`
-      );
+const fetchData = useCallback(async () => {
+  try {
+    const bor = await axios.get(
+      await axios.get(
+        `${API_BASE}/api/books/my-books?email=${userEmail}`
+)
+    );
 
-      const res = await axios.get(
-        `http://localhost:8080/api/books/reserved?email=${userEmail}`
-      );
+    const res = await axios.get(
+      await axios.get(
+        `${API_BASE}/api/books/reserved?email=${userEmail}`
+)
+    );
 
-      setBorrowed(bor.data);
-      setReserved(res.data);
-    } catch (err) {
-      console.error("API ERROR:", err);
-    }
-  };
+    setBorrowed(bor.data);
+    setReserved(res.data);
+  } catch (err) {
+    console.error("API ERROR:", err);
+  }
+}, [userEmail]);
 
   const logout = () => {
     localStorage.removeItem("userEmail");
